@@ -1,0 +1,40 @@
+/* Estilos para el navbar */
+.navbar-custom {
+  background-color: rgba(0, 0, 0, 0.8);
+  /* Color de fondo semi-opaco */
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+  /* Borde inferior semi-transparente */
+  border-radius: 10px;
+  /* Bordes redondeados */
+}
+
+.navbar-brand {
+  color: #ffffff;
+  /* Color del texto del brand */
+}
+
+.navbar-nav .nav-link {
+  color: #ffffff;
+  /* Color del texto de los enlaces */
+}
+
+.navbar-nav .nav-link:hover {
+  color: #ffffff;
+  /* Color del texto de los enlaces al pasar el ratón */
+  background-color: rgba(255, 255, 255, 0.2);
+  /* Color de fondo semi-transparente al pasar el ratón */
+  border-radius: 5px;
+  /* Bordes redondeados al pasar el ratón */
+}
+.mi {
+  background-image: url("https://img.freepik.com/fotos-premium/fondo-borroso-azul_491279-1066.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: white;
+  /* Color del texto */
+}
+
+#client-testimonial-carousel {
+  min-height: 200px;
+}
