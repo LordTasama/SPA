@@ -2,27 +2,33 @@
 session_start();
 require_once '../config/mysql.php';
 $mysql = new Mysql;
-try {
-    if (
-        isset($_SESSION['id']) && isset($_SESSION['correo']) && isset($_SESSION['password']) &&
-        isset($_SESSION['login'])
-    ) {
-        $id = $_SESSION['id'];
-        $mysql->conectar();
-        $stmt = $mysql->consulta("SELECT estado FROM usuario where id = ?", [$id]);
-        $result = $stmt->fetch(PDO::FETCH_NUM);
+try{
 
-        if (count($result) == 1) {
-            if ($result[0] != 1) {
-                session_destroy();
-               header("Location: ./login.php");
-               exit;
-            }
-        }
-    } else {
-        session_destroy();
-      header("Location: ./login.php");
-     exit;
+if (isset($_SESSION['id']) && isset($_SESSION['correo']) && isset($_SESSION['password']) &&
+    isset($_SESSION['login'])){
+    $id = $_SESSION['id'];
+    $mysql->conectar();
+    $rol = $_SESSION['rol'] ?? '';
+    switch ($rol) {
+        case '':
+            break;
+        default:
+    $table = $rol == 1 ?'usuario':'terapeuta';
+    $stmt = $mysql->consulta("SELECT estado FROM $table where id = ?",[$id]);
+    $result = $stmt->fetch(PDO::FETCH_NUM);
+    
+    if (count($result) == 1){
+    if($result[0] != 1){
+    session_destroy();
+    header("Location: ./login.php");
+    exit;
+    }
+    }
+    }
+    }
+     else{
+    header("Location: ./controlpanel.php");
+    exit;    
     }
 ?>
 
@@ -81,7 +87,7 @@ try {
 
             <!-- Divider -->
             <hr class="sidebar-divider">
-
+            <?php if ($rol == 1) {?>
             <!-- Heading -->
             <div class="sidebar-heading">
                 Base de datos
@@ -114,6 +120,7 @@ try {
                             <a class="collapse-item cursor-link-a" onclick="pageChange(2)">Clientes</a>
                             <i class="fa-solid fa-user fa-sm me-1"></i>
                         </div>
+
                         <div class="collapse-item d-flex align-items-center p-0 justify-content-between">
                             <i class="fa-solid fa-caret-right fa-sm ms-1"></i>
                             <a class="collapse-item cursor-link-a" onclick="pageChange(3)">Servicios</a>
@@ -154,7 +161,7 @@ try {
                     <i class="fas fa-fw fa-layer-group"></i>
                     <span>Informes</span></a>
             </li>
-
+            <?php }?>
             <!-- Divider -->
             <hr class="sidebar-divider">
 
@@ -163,8 +170,8 @@ try {
                 Facturación
             </div>
             <li class="nav-item">
-                <a class="nav-link collapsed cursor-link-a" href="./facturar.php"
-                    aria-expanded="false" aria-controls="collapseTwo">
+                <a class="nav-link collapsed cursor-link-a" href="./facturar.php" aria-expanded="false"
+                    aria-controls="collapseTwo">
                     <i class="fa-solid fa-file-invoice"></i>
                     <span>Facturar</span>
                 </a>
@@ -656,14 +663,15 @@ try {
                                 </div>
 
                                 <div class="col m-2 card shadow">
-                                 
-                                        <hr>
-                                        <div class="table-responsive" >
-                                        <table id="tabla" class="table table-bordered datatable" width="100%"
-                                        cellspacing="0">
 
-                                        </table></div>
-                                   
+                                    <hr>
+                                    <div class="table-responsive">
+                                        <table id="tabla" class="table table-bordered datatable" width="100%"
+                                            cellspacing="0">
+
+                                        </table>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>

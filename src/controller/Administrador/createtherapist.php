@@ -2,6 +2,11 @@
 session_start();
 require_once '../../config/mysql.php';
 $mysql = new Mysql;
+$rol = $_SESSION['rol'] ?? 0;
+if ($rol != 1) {
+    echo '{"data":"Debes ser administrador para realizar esta acción","response":"error"}';
+    exit;
+}
 try{
 if (isset($_SESSION['id']) && isset($_SESSION['correo']) && isset($_SESSION['password']) &&
     isset($_SESSION['login'])){
