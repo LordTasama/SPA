@@ -3,23 +3,32 @@ session_start();
 require_once '../../config/mysql.php';
 $mysql = new Mysql;
 
-try {
-    if (isset($_SESSION['id']) && isset($_SESSION['correo']) && isset($_SESSION['password']) && isset($_SESSION['login'])) {
+try{
+    if (isset($_SESSION['id']) && isset($_SESSION['correo']) && isset($_SESSION['password']) &&
+        isset($_SESSION['login'])){
         $id = $_SESSION['id'];
         $mysql->conectar();
-        $stmt = $mysql->consulta("SELECT estado FROM usuario WHERE id = ?", [$id]);
+        $rol = $_SESSION['rol'] ?? '';
+       
+        if ($rol == '') {
+        session_destroy();
+        echo '{"data":"Rol no está definido","response":"error"}';
+        exit;
+        }
+        $table = $rol == 1 ? 'usuario' : 'terapeuta';
+        $stmt = $mysql->consulta("SELECT estado FROM $table where id = ?",[$id]);
         $result = $stmt->fetch(PDO::FETCH_NUM);
-
-        if ($result && count($result) == 1) {
-            if ($result[0] != 1) {
-                session_destroy();
-                echo json_encode(["data" => "Su estado es inactivo", "response" => "error"]);
-                exit;
-            } else {
+        if (count($result) == 1){
+        if($result[0] != 1){
+        session_destroy();
+        echo '{"data":"Su estado es inactivo","response":"error"}';
+        exit;
+        } else {
                 if (!isset($_POST['id'], $_POST['fecha'], $_POST['name'], $_POST['servicio']) || empty($_POST['id']) || empty($_POST['fecha']) || empty($_POST['name']) || empty($_POST['servicio'])) {
                     echo json_encode(["data" => "Datos no válidos", "response" => "error"]);
                     exit;
                 }
+                $mysql->conectar();
 
                 $id = preg_replace('/\s+/', '', $_POST['id']);
                 $fecha = preg_replace('/\s+/', '', $_POST['fecha']);

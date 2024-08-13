@@ -25,7 +25,6 @@ echo '{"data":"Datos no válidos","response":"error"}';
 $rol = $_POST['rol'];
 $user = $_POST['user'];
 $password = $_POST['password'];
-
 $table = $rol == 1 ? "usuario" : "terapeuta";
 $mysql -> conectar();
 if(is_numeric($user)){
@@ -48,7 +47,7 @@ if ($stmt->rowCount() == 1){
         $_SESSION['apellidos'] = $result[2];
         $_SESSION['correo'] = $result[4];
         $_SESSION['password'] = $result[5];
-        $_SESSION['rol'] = $rol == 1 ? $result[7] : -1;
+        $_SESSION['rol'] = $rol == 2 ? $rol : $result[6];
         $_SESSION['login'] = true;
         echo '{"data":"Datos validados correctamente","response":"success"}';
         exit;

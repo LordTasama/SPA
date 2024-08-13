@@ -12,15 +12,10 @@ public function conectar(){
             $this->pdo = new PDO($this->dsn, $this->username, $this->password);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
-            $_SESSION['message'] = 'Algo inesperado ocurrió con la base de datos...';
-            if(isset($_SESSION["rol"])){
-            header("Location: ./");
-            }
-            else{
-            header("Location: ../../");
-            }
-            
             $_SESSION["database_error"] = 1;
+            session_destroy();
+            echo '{"data":"Algo inesperado ocurrió con la base de datos... no se pudo conectar","response":"error"},"add":"<script>window.location.href = "./login.php";</script>"';
+            exit;
         }
 }
 
