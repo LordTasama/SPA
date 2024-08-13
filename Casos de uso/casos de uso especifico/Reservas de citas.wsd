@@ -1,0 +1,15 @@
+@startuml
+left to right direction
+
+actor "SPA 'El Masaje Relajante'" as spa
+
+rectangle "Gestión de Clientes" {
+  usecase "Crear perfil de cliente" as crear_perfil_uc
+  usecase "Editar perfil de cliente" as editar_perfil_uc
+  usecase "Eliminar perfil de cliente" as eliminar_perfil_uc
+}
+
+spa --> crear_perfil_uc
+spa --> editar_perfil_uc
+spa --> eliminar_perfil_uc
+@enduml

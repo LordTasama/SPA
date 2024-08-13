@@ -1,0 +1,11 @@
+sequenceDiagram
+    participant Cliente
+    participant "Sistema de Reservas" as Reservas
+    participant Calendario
+    participant "Base de Datos" as Base_de_Datos
+    Cliente->>Reservas: Solicitar reserva de cita
+    Reservas->>Calendario: Verificar disponibilidad
+    Calendario->>Reservas: Disponibilidad confirmada
+    Reservas->>Base_de_Datos: Registrar reserva
+    Base_de_Datos-->>Reservas: Confirmación de registro
+    Reservas-->>Cliente: Confirmación de reserva

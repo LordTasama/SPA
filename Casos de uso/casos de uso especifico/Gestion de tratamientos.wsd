@@ -1,0 +1,11 @@
+@startuml
+left to right direction
+
+actor "SPA 'El Masaje Relajante'" as spa
+
+rectangle "Gestión de Tratamientos y Servicios" {
+  usecase "Gestionar tratamientos y servicios" as gestionar_tratamientos_uc
+}
+
+spa --> gestionar_tratamientos_uc
+@enduml

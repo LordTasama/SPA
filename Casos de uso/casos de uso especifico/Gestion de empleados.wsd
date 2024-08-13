@@ -1,0 +1,11 @@
+@startuml
+left to right direction
+
+actor "SPA 'El Masaje Relajante'" as spa
+
+rectangle "Gestión de Terapeutas y Empleados" {
+  usecase "Crear perfil de terapeuta" as crear_perfil_terapeuta_uc
+}
+
+spa --> crear_perfil_terapeuta_uc
+@enduml

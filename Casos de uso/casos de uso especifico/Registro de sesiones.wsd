@@ -1,0 +1,11 @@
+@startuml
+left to right direction
+
+actor "SPA 'El Masaje Relajante'" as spa
+
+rectangle "Registro de Sesiones y Tratamientos" {
+  usecase "Registrar sesión de tratamiento" as registrar_sesion_uc
+}
+
+spa --> registrar_sesion_uc
+@enduml

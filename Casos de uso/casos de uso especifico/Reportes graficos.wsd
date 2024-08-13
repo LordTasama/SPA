@@ -1,0 +1,21 @@
+@startuml
+left to right direction
+
+actor "SPA 'El Masaje Relajante'" as spa
+
+rectangle "Reportes y Gráficos" {
+  usecase "Reporte de ingresos por período" as reporte_ingresos_uc
+  usecase "Reporte de ocupación de terapeutas" as reporte_ocupacion_uc
+  usecase "Gráfico de popularidad de tratamientos" as grafico_popularidad_uc
+  usecase "Gráfico de distribución de ingresos por servicio" as grafico_ingresos_uc
+  usecase "Reporte de clientes frecuentes" as reporte_clientes_uc
+  usecase "Reporte de inventario y consumo de productos" as reporte_inventario_uc
+}
+
+spa --> reporte_ingresos_uc
+spa --> reporte_ocupacion_uc
+spa --> grafico_popularidad_uc
+spa --> grafico_ingresos_uc
+spa --> reporte_clientes_uc
+spa --> reporte_inventario_uc
+@enduml

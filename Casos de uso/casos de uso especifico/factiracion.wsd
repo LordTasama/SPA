@@ -1,0 +1,13 @@
+@startuml
+left to right direction
+
+actor "SPA 'El Masaje Relajante'" as spa
+
+rectangle "Facturación y Pagos" {
+  usecase "Generar factura para tratamiento" as generar_factura_uc
+  usecase "Registrar pago recibido" as registrar_pago_uc
+}
+
+spa --> generar_factura_uc
+spa --> registrar_pago_uc
+@enduml

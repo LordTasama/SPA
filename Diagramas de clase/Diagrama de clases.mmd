@@ -1,0 +1,62 @@
+classDiagram
+    class Cliente {
+        - int idCliente
+        - string nombre
+        - string direccion
+        - string informacionContacto
+        - string preferenciasTratamiento
+        + crearPerfil()
+        + editarPerfil()
+        + eliminarPerfil()
+    }
+    class Terapeuta {
+        - int idTerapeuta
+        - string nombre
+        - string especialidad
+        + crearPerfil()
+    }
+    class Tratamiento {
+        - int idTratamiento
+        - string nombre
+        - float duracion
+        - float precio
+        - Terapeuta terapeutaAsignado
+        + agregarTratamiento()
+        + editarTratamiento()
+        + eliminarTratamiento()
+    }
+    class SesiónTratamiento {
+        - int idSesion
+        - Cliente cliente
+        - Tratamiento tratamiento
+        - Terapeuta terapeuta
+        - string fecha
+        + registrarSesion()
+    }
+    class Factura {
+        - int idFactura
+        - SesiónTratamiento[] sesiones
+        - float total
+        + generarFactura()
+    }
+    class Inventario {
+        - int idProducto
+        - string nombre
+        - int cantidadDisponible
+        + actualizarInventario()
+    }
+    class Reporte {
+        + generarReporteIngresos()
+        + generarReporteOcupacionTerapeutas()
+        + generarReportePopularidadTratamientos()
+        + generarReporteDistribucionIngresos()
+        + generarReporteClientesFrecuentes()
+        + generarReporteInventarioProductos()
+    }
+
+    Cliente "1" --> "*" SesiónTratamiento : tiene
+    SesiónTratamiento "1" --> "1" Tratamiento : realiza
+    Terapeuta "1" --> "*" SesiónTratamiento : realiza
+    Factura "1" --> "*" SesiónTratamiento : incluye
+    Inventario "1" --> "*" Tratamiento : utiliza
+    Reporte ..> Factura : utiliza

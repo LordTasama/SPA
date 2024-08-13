@@ -1,0 +1,11 @@
+@startuml
+left to right direction
+
+actor "SPA 'El Masaje Relajante'" as spa
+
+rectangle "Gestión de Inventario" {
+  usecase "Gestionar inventario de productos" as gestionar_inventario_uc
+}
+
+spa --> gestionar_inventario_uc
+@enduml

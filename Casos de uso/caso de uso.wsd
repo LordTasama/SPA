@@ -1,0 +1,41 @@
+@startuml
+
+actor Cliente
+actor Administrador
+actor Terapeuta
+actor Empleado
+
+rectangle "SPA \"El Masaje Relajante\""
+
+Cliente --> (Reservar Cita)
+Cliente --> (Registrar Datos)
+Cliente --> (Consultar Tratamientos)
+
+Administrador --> (Gestionar Clientes)
+Administrador --> (Gestionar Terapeutas)
+Administrador --> (Gestionar Tratamientos)
+Administrador --> (Generar Facturas)
+Administrador --> (Gestionar Inventario)
+Administrador --> (Generar Reportes)
+
+Terapeuta --> (Registrar Sesiones)
+Terapeuta --> (Consultar Horarios)
+Terapeuta --> (Registrar Tratamientos)
+
+Empleado --> (Gestionar Inventario)
+Empleado --> (Generar Facturas)
+
+(Reservar Cita) --> (Registrar Sesiones)
+(Registrar Datos) --> (Gestionar Clientes)
+(Gestionar Tratamientos) --> (Registrar Sesiones)
+(Gestionar Tratamientos) --> (Consultar Horarios)
+(Generar Facturas) --> (Registrar Pagos)
+(Gestionar Inventario) --> (Registrar Tratamientos)
+(Generar Reportes) --> (Reporte Ingresos)
+(Generar Reportes) --> (Reporte Ocupación)
+(Generar Reportes) --> (Reporte Popularidad)
+(Generar Reportes) --> (Reporte Distribución)
+(Generar Reportes) --> (Reporte Clientes)
+(Generar Reportes) --> (Reporte Inventario)
+
+@enduml
