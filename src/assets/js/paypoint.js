@@ -1,4 +1,5 @@
 const totalPriceInput = document.getElementById('preciopagar');
+totalPriceInput.innerText = '0';
 let totalPrice = 0; // Initialize totalPrice to 0
 const tableBodyOtherTable = document.getElementById('table-body-other-table');
 
@@ -44,11 +45,12 @@ document.addEventListener('click', function(event) {
 
             // Update the total price
             const totalPriceInput = document.getElementById('preciopagar');
-            const totalPrice = parseFloat(totalPriceInput.value);
-            totalPriceInput.value = totalPrice + parseFloat(productPrice);
+            const totalPrice = parseFloat(totalPriceInput.innerText);
+            totalPriceInput.innerText = totalPrice + parseFloat(productPrice);
         } else {
             if (stock <= 0) {
-    alert("No hay stock disponible para este producto");
+                $.notify("No hay stock disponible para este producto", "error");
+      
 }}
     }
 });
@@ -89,8 +91,8 @@ document.addEventListener('click', function(event) {
 
         // Update the total price
         const totalPriceInput = document.getElementById('preciopagar');
-        const totalPrice = parseFloat(totalPriceInput.value);
-        totalPriceInput.value = totalPrice - parseFloat(productPrice);
+        const totalPrice = parseFloat(totalPriceInput.innerText);
+        totalPriceInput.innerText = totalPrice - parseFloat(productPrice);
 
         const addButton = document.getElementById(`add-button-${productId}`);
         addButton.disabled = false;
@@ -122,10 +124,11 @@ if (!existingRow) {
 
     // Update the total price
     const totalPriceInput = document.getElementById('preciopagar');
-    const totalPrice = parseFloat(totalPriceInput.value);
-    totalPriceInput.value = totalPrice + parseFloat(servicePrice);
+    const totalPrice = parseFloat(totalPriceInput.innerText);
+    totalPriceInput.innerText = totalPrice + parseFloat(servicePrice);
 } else {
-    alert("El servicio ya ha sido agregado");
+    $.notify("Este sevicio ya se agregó", "error");
+      
 }
 }
 });
@@ -143,8 +146,8 @@ row.remove();
 
 // Update the total price
 const totalPriceInput = document.getElementById('preciopagar');
-const totalPrice = parseFloat(totalPriceInput.value);
-totalPriceInput.value = totalPrice - parseFloat(servicePrice);
+const totalPrice = parseFloat(totalPriceInput.innerText);
+totalPriceInput.innerText = totalPrice - parseFloat(servicePrice);
 }
 });
 

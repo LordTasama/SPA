@@ -1,3 +1,13 @@
+.notifyjs-corner {
+  z-index: 11000 !important;
+}
+.dt-empty {
+  display: none;
+}
+.modal-dialog {
+  z-index: 1;
+}
+
 .page-hide {
   display: none;
 }

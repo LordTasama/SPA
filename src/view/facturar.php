@@ -120,10 +120,15 @@ try {
                         <p></p>
 
                         <script>
-                            const fechaPagoInput = document.getElementById("fechapago");
+                            const fechaPagoInput = document.getElementById('fechapago');
                             const now = new Date();
-                            const formattedNow = now.toISOString().slice(0, 16); // YYYY-MM-DDTHH:MM:SS
-                            fechaPagoInput.value = formattedNow;
+                            const year = now.getFullYear();
+                            const month = (`0${now.getMonth() + 1}`).slice(-2);
+                            const day = (`0${now.getDate()}`).slice(-2);
+                            const hour = (`0${now.getHours()}`).slice(-2);
+                            const minute = (`0${now.getMinutes()}`).slice(-2);
+                            const second = (`0${now.getSeconds()}`).slice(-2);
+                            fechaPagoInput.value = `${year}-${month}-${day}T${hour}:${minute}:${second}`;
                         </script>
 
 
@@ -132,14 +137,14 @@ try {
                         <div class="col-12 ">
 
 
-                            <div>
-                                <a id="generarfactura" class="btn btn-success btn-block">Liquidar</a>
-                            </div>
 
+
+                            <h1 for="">Total a pagar</h1>
+                            <span id="preciopagar" class="display-4"></span>$ <br>
                             <br>
-                            <label for="">Total a pagar</label>
-                            <input type="text" name="" class="form-control" disabled id="preciopagar" value="0"> <input type="hidden" id="idcliente">
-
+                            <div>
+                                <a id="generarfactura" class="btn btn-warning btn-block">Generar factura</a>
+                            </div>
                         </div>
 
 
