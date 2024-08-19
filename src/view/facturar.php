@@ -106,7 +106,7 @@ try {
                         <p></p>
                         <div class="col"><label for="">Método de pago</label>
                             <select class="form-control" id="metodopago" name="select">
-                                <option value="Ingresos">Efectivo</option>
+                                <option value="Efectivo">Efectivo</option>
                                 <option value="Credito">Crédito</option>
                                 <option value="Transferencia">Transferencia</option>
 
@@ -143,7 +143,7 @@ try {
                             <span id="preciopagar" class="display-4"></span>$ <br>
                             <br>
                             <div>
-                                <a id="generarfactura" class="btn btn-warning btn-block">Generar factura</a>
+                                <a id="generarfactura" class="btn btn-success btn-block">Generar factura</a>
                             </div>
                         </div>
 
