@@ -178,7 +178,7 @@ generarfactura.addEventListener("click", function () {
       total: totalPriceInput.innerText, // total de la factura
       metodo_pago: document.getElementById("metodopago").value, // método de pago
       id_cliente: cliente.value, // ID del cliente
-      detalles: [], // detalles de la factura
+      detalle: [], // detalles de la factura
     };
     for (let i = 2; i < tableBodyOtherTable.rows.length; i++) {
       const row = tableBodyOtherTable.rows[i];
@@ -189,9 +189,33 @@ generarfactura.addEventListener("click", function () {
         cantidad: row.cells[3].textContent,
         precio_unitario: row.cells[2].textContent,
       };
-      facturaData.detalles.push(detalle);
+      facturaData.detalle.push(detalle);
     }
     console.log(facturaData);
-  }
+    fetch("../controller/create/Createfactura.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
 
+      body: JSON.stringify(facturaData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.response === "success") {
+          $.notify(data.data, "success"); // Notify the user with a success message
+          document.querySelector('.btn-success').innerHTML = 'Factura creada con éxito';
+          document.querySelector('.btn-success').disabled = true;
+        
+ 
+setTimeout(() => {
+  location.reload();
+}, "2000");
+          
+             } else {
+          $.notify("Error al crear la factura", "error"); // Notify the user with an error message
+        }
+      })
+      .catch((error) => console.error("Error:", error));
+  }
 });

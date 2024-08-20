@@ -1,119 +1,71 @@
 <?php
 session_start();
 require_once '../../config/mysql.php';
-
-class FacturaController
-{
-    private $mysql;
-
-    public function __construct($mysql)
-    {
-        $this->mysql = $mysql;
-    }
-
-    public function createFacturaWithDetails($fecha, $total, $metodo_pago, $id_cliente, $detalles)
-    {
-        try {
-            $this->mysql->conectar();
-            $this->mysql->beginTransaction();
-
-            $stmt = $this->mysql->consulta("INSERT INTO factura (fecha, total, metodo_pago, id_cliente) VALUES (?, ?, ?, ?)", [$fecha, $total, $metodo_pago, $id_cliente]);
-
-            if ($stmt) {
-                $idFactura = $this->mysql->lastInsertId();
-
-                foreach ($detalles as $detalle) {
-                    $id_producto = $detalle['id_producto'] ?? null;
-                    $id_servicio = $detalle['id_servicio'] ?? null;
-                    $cantidad = $detalle['cantidad'];
-                    $precio_unitario = $detalle['precio_unitario'];
-                    $subtotal = $cantidad * $precio_unitario; 
-
-                    $this->mysql->consulta("INSERT INTO detalle_factura (id_factura, id_producto, id_servicio, cantidad, precio_unitario, subtotal) 
-                                            VALUES (?, ?, ?, ?, ?, ?)", [$idFactura, $id_producto, $id_servicio, $cantidad, $precio_unitario, $subtotal]);
-                }
-
-                $this->mysql->commit();
-                return $idFactura;
-            }
-
-            $this->mysql->rollback();
-            return false;
-        } catch (Exception $e) {
-            $this->mysql->rollback();
-            throw $e;
-        }
-    }
-
-    public function getFacturaWithDetails($id)
-    {
-        $this->mysql->conectar();
-        
-        // Obtener la factura
-        $stmt = $this->mysql->consulta("SELECT * FROM factura WHERE id = ?", [$id]);
-        $factura = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if ($factura) {
-            // Obtener los detalles de la factura
-            $stmt = $this->mysql->consulta("SELECT * FROM detalle_factura WHERE id_factura = ?", [$id]);
-            $detalles = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            $factura['detalles'] = $detalles;
-            return $factura;
-        }
-
-        return null;
-    }
-}
+$mysql = new Mysql;
 
 try {
-    if (isset($_SESSION['id']) && isset($_SESSION['correo']) && isset($_SESSION['password']) && isset($_SESSION['login'])) {
+    if (isset($_SESSION['id']) && isset($_SESSION['correo']) && isset($_SESSION['password']) &&
+        isset($_SESSION['login'])) {
         $id = $_SESSION['id'];
-        $mysql = new Mysql;
         $mysql->conectar();
-        $stmt = $mysql->consulta("SELECT estado, id_rol FROM usuario WHERE id = ?", [$id]);
-        $result = $stmt->fetch(PDO::FETCH_NUM);
+        $rol = $_SESSION['rol'] ?? '';
 
-        if (count($result) == 2) {
+        if ($rol == '') {
+            session_destroy();
+            echo '{"data":"Rol no está definido","response":"error"}';
+            exit;
+        }
+
+        $table = $rol == 1 ? 'usuario' : 'terapeuta';
+        $stmt = $mysql->consulta("SELECT estado FROM $table where id = ?", [$id]);
+        $result = $stmt->fetch(PDO::FETCH_NUM);
+        if (count($result) == 1) {
             if ($result[0] != 1) {
                 session_destroy();
                 echo '{"data":"Su estado es inactivo","response":"error"}';
                 exit;
-            }
-            if ($result[1] != 1) {
-                echo '{"data":"Debes ser administrador para realizar esta acción","response":"error"}';
-                exit;
             } else {
-                // Instancia del controlador de factura
-                $facturaController = new FacturaController($mysql);
+                $json = json_decode(file_get_contents('php://input'), true);
 
-                if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                    // Ejemplo de creación de factura con detalles
-                    $fecha = $_POST['fecha'];
-                    $total = $_POST['total'];
-                    $metodo_pago = $_POST['metodo_pago'];
-                    $id_cliente = $_POST['id_cliente'];
+                if (!isset($json['fecha']) || !isset($json['total']) || !isset($json['metodo_pago']) || !isset($json['id_cliente']) || !isset($json['detalle'])) {
+                    echo '{"data":"Datos no válidos","response":"error"}';
+                    exit;
+                }
 
-                    // Obtener los detalles de la factura desde la tabla
-                    $detalles = array();
-                    foreach ($_POST['detalle'] as $row) {
-                        $detalle = array(
-                            'id_producto' => $row['id_producto'],
-                            'id_servicio' => $row['id_servicio'],
-                            'cantidad' => $row['cantidad'],
-                            'precio_unitario' => $row['precio_unitario']
-                        );
-                        $detalles[] = $detalle;
+                $fecha = $json['fecha'];
+                $total = $json['total'];
+                $metodo_pago = $json['metodo_pago'];
+                $id_cliente = $json['id_cliente'];
+                $detalle = $json['detalle'];
+
+                // Validate detalle array
+                foreach ($detalle as $item) {
+                    if (!isset($item['id_producto']) && !isset($item['id_servicio'])) {
+                        echo '{"data":"Datos no válidos","response":"error"}';
+                        exit;
                     }
-
-                    $nuevoIdFactura = $facturaController->createFacturaWithDetails($fecha, $total, $metodo_pago, $id_cliente, $detalles);
-                    if ($nuevoIdFactura) {
-                        echo '{"data":"Factura creada con éxito, ID: ' . $nuevoIdFactura . '","response":"success"}';
-                    } else {
-                        echo '{"data":"Error al crear la factura.","response":"error"}';
+                    if (!isset($item['cantidad']) || !isset($item['precio_unitario'])) {
+                        echo '{"data":"Datos no válidos","response":"error"}';
+                        exit;
                     }
                 }
-                // Aquí podrías agregar manejo para otros métodos como GET, PUT, DELETE si lo necesitas.
+
+                // Insert factura
+                $mysql->consulta("INSERT INTO factura (fecha, total, metodo_pago, id_cliente) VALUES (?, ?, ?, ?)", [$fecha, $total, $metodo_pago, $id_cliente]);
+             
+                $id_factura = $mysql->lastInsertId();
+
+                // Insert detalle
+                foreach ($detalle as $item) {
+                    if (isset($item['id_producto'])) {
+                        $mysql->consulta("INSERT INTO detalle_factura (id_factura, id_producto, cantidad, precio_unitario) VALUES (?, ?, ?, ?)", [$id_factura, $item['id_producto'], $item['cantidad'], $item['precio_unitario']]);
+                    } elseif (isset($item['id_servicio'])) {
+                        $mysql->consulta("INSERT INTO detalle_factura (id_factura, id_servicio, cantidad, precio_unitario) VALUES (?, ?, ?, ?)", [$id_factura, $item['id_servicio'], $item['cantidad'], $item['precio_unitario']]);
+                    }
+                }
+
+                echo '{"data":"Factura creada con éxito","response":"success"}';
+                exit;
             }
         } else {
             session_destroy();
@@ -126,6 +78,6 @@ try {
         exit;
     }
 } catch (Exception $e) {
-    echo '{"data":"Algo inesperado ocurrió...","response":"error"}';
+    echo '{"data":"' . $e->getMessage() . '","response":"error"}';
     exit;
 }

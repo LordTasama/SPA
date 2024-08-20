@@ -73,7 +73,7 @@ try {
         <div class="container card shadow m-5">
             <div class="row p-3">
                 <div class="col-md-6">
-                    <form action="">
+                
 
 
 
@@ -128,7 +128,7 @@ try {
                             const hour = (`0${now.getHours()}`).slice(-2);
                             const minute = (`0${now.getMinutes()}`).slice(-2);
                             const second = (`0${now.getSeconds()}`).slice(-2);
-                            fechaPagoInput.value = `${year}-${month}-${day}T${hour}:${minute}:${second}`;
+                            fechaPagoInput.value = `${year}-${month}-${day}T${hour}:${minute}`;
                         </script>
 
 
@@ -143,14 +143,14 @@ try {
                             <span id="preciopagar" class="display-4"></span>$ <br>
                             <br>
                             <div>
-                                <a id="generarfactura" class="btn btn-success btn-block">Generar factura</a>
+                                <button id="generarfactura" class="btn btn-success btn-block">Generar factura</button>
                             </div>
                         </div>
 
 
 
 
-                    </form>
+                
                 </div>
                 <div class="col-md-6">
                     <br>
