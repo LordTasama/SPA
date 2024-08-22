@@ -158,16 +158,16 @@ p {
 }
 
 .control--checkbox input:disabled:checked ~ .control__indicator {
-  background-color: #7e0cf5;
+  background-color: #671C34;
   opacity: 0.2;
 }
 
 #btnLogin {
   width: 100%;
-  background-color: #6c29e7;
+  background-color: #671C34;
   font-weight: 500;
   color: #fff;
 }
 #btnLogin:hover {
-  background-color: #5a21c3;
+  background-color: #94294b;
 }

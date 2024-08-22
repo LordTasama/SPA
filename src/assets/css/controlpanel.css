@@ -79,10 +79,10 @@
 }
 
 .bg-sidebar {
-  background-image: linear-gradient(#9400d3, #90aaff);
+  background-image: linear-gradient(#671C34, #853d55) ; 
 }
 .spa-color {
-  color: #ab39db;
+  color: #671C34 ;
 }
 
 .cursor-link-a {

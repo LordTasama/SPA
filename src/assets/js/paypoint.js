@@ -219,3 +219,53 @@ setTimeout(() => {
       .catch((error) => console.error("Error:", error));
   }
 });
+
+fetch("../controller/Data/servicesinfo.php", {
+         method: "POST",
+       })
+         .then((response) => {
+           return response.json();
+         })
+         .then((data) => {
+           const servicesTableBody = document.getElementById(
+             "services-table-body"
+           );
+           data.forEach((item) => {
+             const row = document.createElement("tr");
+             row.innerHTML = `
+                                            <td>${item.id}</td>
+                                            <td>${item.nombre}</td>
+                                            <td>${item.precio}</td>
+                                            <td>${item.tipo}</td>
+                                            <td>${item.duracion}</td>
+                                            <td><button id="add-service-button-${item.id}" class="btn btn-warning">Añadir</button></td>
+                                            `;
+             servicesTableBody.appendChild(row);
+           });
+         });
+
+       fetch("../controller/Data/productsinfo.php", {
+         method: "POST",
+       })
+         .then((response) => {
+           console.log(response);
+           return response.json();
+           //
+         })
+         .then((data) => {
+           const tableBody = document.getElementById("table-body");
+           //Button for add to add the producto to the other table and reduce the stock of this
+           data.forEach((item) => {
+             const row = document.createElement("tr");
+             row.innerHTML = `
+                                                <td>${item.id}</td>
+                                                <td><span class="badge bg-dark text-white" id="${item.id}">${item.stock}</span></td>
+                                                <td>${item.nombre}</td>
+                                                 <td>${item.tipo}</td>
+                                                 <td>${item.precio}</td>
+                                                 
+                                                       <td><button id="add-button-${item.id}" class="btn btn-warning">Añadir</button></td>
+   `;
+             tableBody.appendChild(row);
+           });
+         }); 

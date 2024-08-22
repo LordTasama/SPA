@@ -9,7 +9,7 @@
     <meta content="Free HTML Templates" name="description">
 
     <!-- Favicon -->
-    <link href="./src/assets/imgIndex/favicon.ico" rel="icon">
+    <link  href="./src/assets/pictures/logo.jpg" rel="icon">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -33,26 +33,26 @@
         <div class="row py-2 px-lg-5">
             <div class="col-lg-6 text-left mb-2 mb-lg-0">
                 <div class="d-inline-flex align-items-center">
-                    <small><i class="fa fa-phone-alt mr-2"></i>+57 300 726 9738</small>
+                    <small class="text-light"><i class="fa fa-phone-alt mr-2"></i>+57 300 726 9738</small>
                     <small class="px-3">|</small>
-                    <small><i class="fa fa-envelope mr-2"></i>spaCenter@gmail.com</small>
+                    <small class="text-light"><i class="fa fa-envelope mr-2"></i>spaCenter@gmail.com</small>
                 </div>
             </div>
             <div class="col-lg-6 text-right">
                 <div class="d-inline-flex align-items-center">
-                    <a class="text-primary px-2" href="">
+                    <a class="text-light px-2" href="">
                         <i class="fab fa-facebook-f"></i>
                     </a>
-                    <a class="text-primary px-2" href="">
+                    <a class="text-light px-2" href="">
                         <i class="fab fa-twitter"></i>
                     </a>
-                    <a class="text-primary px-2" href="">
+                    <a class="text-light px-2" href="">
                         <i class="fab fa-linkedin-in"></i>
                     </a>
-                    <a class="text-primary px-2" href="">
+                    <a class="text-light px-2" href="">
                         <i class="fab fa-instagram"></i>
                     </a>
-                    <a class="text-primary pl-2" href="">
+                    <a class="text-light pl-2" href="">
                         <i class="fab fa-youtube"></i>
                     </a>
                 </div>
@@ -81,9 +81,9 @@
     <div class="container-fluid p-0 mb-5 pb-5">
         <div id="header-carousel" class="carousel slide carousel-fade" data-ride="carousel">
             <ol class="carousel-indicators">
-                <li data-target="#header-carousel" data-slide-to="0" class="active"></li>
-                <li data-target="#header-carousel" data-slide-to="1"></li>
-                <li data-target="#header-carousel" data-slide-to="2"></li>
+                <li data-bs-target="#header-carousel" data-slide-to="0" class="active"></li>
+                <li data-bs-target="#header-carousel" data-slide-to="1"></li>
+                <li data-bs-target="#header-carousel" data-slide-to="2"></li>
             </ol>
             <div class="carousel-inner">
                 <div class="carousel-item position-relative active" style="min-height: 100vh;">
@@ -158,19 +158,19 @@
                     <img class="img-fluid w-100" src="./src/assets/imgIndex/about.jpg" alt="">
                 </div>
                 <div class="col-lg-6">
-                    <h6 class="d-inline-block text-primary text-uppercase bg-light py-1 px-2">Sobre nosotros</h6>
+                    <h6 class="d-inline-block text-light text-uppercase bg-light py-1 px-2">Sobre nosotros</h6>
                     <h1 class="mb-4">Su mejor centro de spa, belleza y cuidado de la piel</h1>
                     <p class="pl-4 border-left border-primary">Se eivdencia la mejora de nuestros clientes con nuestros especialistas expertos en el trato del cuerpo. Las graficas nos muestran cuantas personas nos buscan como el mejor SPA.</p>
                     <div class="row pt-3">
                         <div class="col-6">
                             <div class="bg-light text-center p-4">
-                                <h3 class="display-4 text-primary" data-toggle="counter-up">10</h3>
+                                <h3 class="display-4 text-light" data-toggle="counter-up">10</h3>
                                 <h6 class="text-uppercase">Especialistas del SPA</h6>
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="bg-light text-center p-4">
-                                <h3 class="display-4 text-primary" data-toggle="counter-up">500</h3>
+                                <h3 class="display-4 text-light" data-toggle="counter-up">500</h3>
                                 <h6 class="text-uppercase">Clientes felices</h6>
                             </div>
                         </div>
@@ -269,15 +269,15 @@
                 <div class="col-lg-6 pt-5 pb-lg-5">
                     <div class="hours-text bg-light p-4 p-lg-5 my-lg-5">
                         <h6 class="d-inline-block text-white text-uppercase bg-primary py-1 px-2">Horarios de apertura</h6>
-                        <h1 class="mb-4">
+                        <h1 class="mb-4 text-light">
                           Horarios disponibles por semana</h1>
-                        <p>Puedes encontrar los mejores servicios en unos horarios flexibles para ti.</p>
+                        <p class="text-light">Puedes encontrar los mejores servicios en unos horarios flexibles para ti.</p>
                         <ul class="list-inline">
-                            <li class="h6 py-1"><i class="far fa-circle text-primary mr-3"></i>Lunes – Viernes : 9:00 AM - 7:00 PM</li>
-                            <li class="h6 py-1"><i class="far fa-circle text-primary mr-3"></i>Sábado : 9:00 AM - 6:00 PM</li>
-                            <li class="h6 py-1"><i class="far fa-circle text-primary mr-3"></i>Domingo : Cerrado</li>
+                            <li class="h6 py-1 text-light"><i class="far fa-circle mr-3"></i>Lunes – Viernes : 9:00 AM - 7:00 PM</li>
+                            <li class="h6 py-1 text-light"><i class="far fa-circle mr-3"></i>Sábado : 9:00 AM - 6:00 PM</li>
+                            <li class="h6 py-1 text-light"><i class="far fa-circle mr-3"></i>Domingo : Cerrado</li>
                         </ul>
-                        <a href="" class="btn btn-My mt-2">reservar ahora</a>
+                        <a href="" class="btn btn-primary mt-2 text-light">Reservar ahora</a>
                     </div>
                 </div>
             </div>
@@ -364,11 +364,11 @@
                     <img class="img-fluid w-100" src="./src/assets/imgIndex/testimonial.jpg" alt="">
                 </div>
                 <div class="col-lg-6">
-                    <h6 class="d-inline-block text-primary text-uppercase bg-light py-1 px-2">Testimonio</h6>
+                    <h6 class="d-inline-block text-light text-uppercase bg-light py-1 px-2">Testimonio</h6>
                     <h1 class="mb-4">Lo que dicen nuestros clientes!</h1>
                     <div class="owl-carousel testimonial-carousel">
                         <div class="position-relative">
-                            <i class="fa fa-3x fa-quote-right text-primary position-absolute" style="top: -6px; right: 0;"></i>
+                            <i class="fa fa-3x fa-quote-right position-absolute" style="top: -6px; right: 0;color:#671C34"></i>
                             <div class="d-flex align-items-center mb-3">
                                 <img class="img-fluid rounded-circle" src="./src/assets/imgIndex/testimonial-1.jpg" style="width: 60px; height: 60px;" alt="">
                                 <div class="ml-3">
@@ -379,7 +379,7 @@
                             <p class="m-0">El servicio es super bueno, no tiene ningun dolor de desagrado y me ayuda a tomarle al cuerpo un buen decanso.</p>
                         </div>
                         <div class="position-relative">
-                            <i class="fa fa-3x fa-quote-right text-primary position-absolute" style="top: -6px; right: 0;"></i>
+                            <i class="fa fa-3x fa-quote-right position-absolute" style="top: -6px; right: 0;color:#671C34"></i>
                             <div class="d-flex align-items-center mb-3">
                                 <img class="img-fluid rounded-circle" src="./src/assets/imgIndex/testimonial-2.jpg" style="width: 60px; height: 60px;" alt="">
                                 <div class="ml-3">
@@ -390,7 +390,7 @@
                             <p class="m-0">El servicio le doy 10/10, me senti super relajada.</p>
                         </div>
                         <div class="position-relative">
-                            <i class="fa fa-3x fa-quote-right text-primary position-absolute" style="top: -6px; right: 0;"></i>
+                            <i class="fa fa-3x fa-quote-right position-absolute" style="top: -6px; right: 0;color:#671C34"></i>
                             <div class="d-flex align-items-center mb-3">
                                 <img class="img-fluid rounded-circle" src="./src/assets/imgIndex/testimonial-3.jpg" style="width: 60px; height: 60px;" alt="">
                                 <div class="ml-3">
@@ -414,7 +414,7 @@
             <div class="row">
                 <div class="col-lg-6 pr-lg-5 mb-5">
                     <a href="index.html" class="navbar-brand">
-                        <h1 class="mb-3 text-white"><span class="text-primary">SPA</span></h1>
+                        <h1 class="mb-3 text-white"><span style="color:#671C34">SPA</span></h1>
                     </a>
                     <p>Para cualquier informacion y si deseas pedir la cita, porfavor comunicarsepor los siguientes contactos.</p>
                     <p><i class="fa fa-map-marker-alt mr-2"></i>Xarrera 7 #13-55 Centro</p>

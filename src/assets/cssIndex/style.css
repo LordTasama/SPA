@@ -7,8 +7,8 @@
  */
 :root {
   --blue: #007bff;
-  --indigo: #6610f2;
-  --purple: #6f42c1;
+  --indigo: #671C34;
+  --purple: #671C34;
   --pink: #e83e8c;
   --red: #dc3545;
   --orange: #fd7e14;
@@ -9674,7 +9674,7 @@ h6,
 
 .testimonial-carousel .owl-dot.active {
   width: 50px;
-  background: #1c0068;
+  background: #671C34;
 }
 
 .footer p,
@@ -9705,5 +9705,5 @@ h6,
   list-style-type: none;
 }
 .btn-My{
-  background-color: #6633f2;
+  background-color: #671C34;
 }
