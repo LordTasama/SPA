@@ -9,7 +9,7 @@ function cargar() {
       height: 350,
       type: "bar",
     },
-    colors: ["#671C34"], // Aquí defines los colores de las barras
+    colors: ["#463A72"], // Aquí defines los colores de las barras
     dataLabels: {
       enabled: false,
     },
@@ -116,7 +116,7 @@ function cargar() {
             },
           },
 
-          colors: ["#671C34", "#FF5733", "#C70039", "#900C3F", "#581845"], // Asignas los colores aquí
+          colors: ["#431C67", "#463A72", "#4F437C", "#574B87", "#623D85"],// Asignas los colores aquí
           theme: {
             mode: "light",
             monochrome: {
