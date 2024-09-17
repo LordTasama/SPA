@@ -52,7 +52,6 @@ try {
 
                 // Insert factura
                 $mysql->consulta("INSERT INTO factura (fecha, total, metodo_pago, id_cliente) VALUES (?, ?, ?, ?)", [$fecha, $total, $metodo_pago, $id_cliente]);
-             
                 $id_factura = $mysql->lastInsertId();
 
                 // Insert detalle

@@ -28,7 +28,7 @@ try{
         // Buscar el nombre del cliente por identificación (ID)
         if (isset($_POST['id'])) {
             $identificacion = $_POST['id'];
-            $stmt = $mysql->consulta("SELECT nombres FROM cliente WHERE id = ?", [$identificacion]);
+            $stmt = $mysql->consulta("SELECT nombres FROM cliente  where id LIKE ?",["%$id%"], [$identificacion]);
             $result = $stmt->fetch(PDO::FETCH_NUM);
 
             if ($stmt->rowCount() == 1) {

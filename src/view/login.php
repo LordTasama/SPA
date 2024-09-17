@@ -77,18 +77,18 @@ if (isset($_SESSION['id']) && isset($_SESSION['correo']) && isset($_SESSION['pas
 
                             <!--- FIN MENSAJE ALERTA --->
                             <div class="form-floating mb-3">
-                                <select id="rol" class="form-select">
+                                <select hidden id="rol" class="form-select">
                                     <option value="1">Usuario</option>
                                     <option value="2">Terapeuta</option>
                                 </select>
                                 <label for="user">Selecciona tu rol</label>
                             </div>
                             <div class="form-floating mb-3">
-                                <input type="user" class="form-control" id="user" placeholder="">
+                                <input type="user" class="form-control" id="user" >
                                 <label for="user">Correo electrónico o identificación</label>
                             </div>
                             <div class="form-floating mb-3">
-                                <input type="password" class="form-control" id="password" placeholder="">
+                                <input type="password" class="form-control" id="password" >
                                 <label for="password">Contraseña</label>
                             </div>
 

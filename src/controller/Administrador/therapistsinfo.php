@@ -35,7 +35,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['correo']) && isset($_SESSION['pas
         $stmt = $mysql->consulta("SELECT * FROM terapeuta $list",[]);
         if(isset($_GET["id"])){
          $id = $_GET["id"];
-         $stmt = $mysql->consulta("SELECT * FROM terapeuta where id = ?",[$id]);
+         $stmt = $mysql->consulta("SELECT * FROM terapeuta  where id LIKE ?",["%$id%"]);
         }
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         echo json_encode($result);

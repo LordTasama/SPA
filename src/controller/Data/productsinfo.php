@@ -32,7 +32,7 @@ try{
         $stmt = $mysql->consulta("SELECT * FROM producto ".$list,[]);
         if(isset($_GET["id"])){
          $id = $_GET["id"];
-         $stmt = $mysql->consulta("SELECT * FROM producto where id = ?",[$id]);
+         $stmt = $mysql->consulta("SELECT * FROM producto  where id LIKE ?",["%$id%"]);
         }
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         echo json_encode($result);
