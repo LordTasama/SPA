@@ -2,28 +2,21 @@
 session_start();
 require_once '../../config/mysql.php';
 $mysql = new Mysql;
-try{
-    if (isset($_SESSION['id']) && isset($_SESSION['correo']) && isset($_SESSION['password']) &&
-        isset($_SESSION['login'])){
-        $id = $_SESSION['id'];
-        $mysql->conectar();
-        $rol = $_SESSION['rol'] ?? '';
-       
-        if ($rol == '') {
-        session_destroy();
-        echo '{"data":"Rol no está definido","response":"error"}';
-        exit;
-        }
-        $table = $rol == 1 ? 'usuario' : 'terapeuta';
-        $stmt = $mysql->consulta("SELECT estado FROM $table where id = ?",[$id]);
-        $result = $stmt->fetch(PDO::FETCH_NUM);
-        if (count($result) == 1){
-        if($result[0] != 1){
-        session_destroy();
-        echo '{"data":"Su estado es inactivo","response":"error"}';
-        exit;
-        }
-    else{
+
+if (
+    isset($_SESSION['id']) && isset($_SESSION['correo']) && isset($_SESSION['password']) &&
+    isset($_SESSION['login'])
+) {
+    $id = $_SESSION['id'];
+    $mysql->conectar();
+    $rol = $_SESSION['rol'] ;
+
+    $stmt = $mysql->consulta("SELECT id_rol, estado FROM usuario where id = ?", [$id]);
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (count($result) == 2) {
+        if ($result['estado'] == 1 && ($result['id_rol'] == 1)) {
+        
         if (!isset($_POST['id']) || !isset($_POST['names']) || !isset($_POST['lastname']) || !isset($_POST['address']) || !isset($_POST['phone']) || !isset($_POST['email'])){
             echo '{"data":"Datos no válidos","response":"error"}';
             exit;
@@ -70,10 +63,3 @@ try{
         echo '{"data":"No deberías estar aquí, vete e inicia sesión correctamente...","response":"error"}';
         exit;
         }
-}
-catch(Exception $e){
-    echo '{"data":"Algo inesperado ocurrió...","response":"error"}'; 
-    exit;
-    
- 
-}

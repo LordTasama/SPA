@@ -413,7 +413,9 @@ const returnDatatableOption = (condition, URL) => {
     }
   }
   console.log(datatableOptions);
+replaceid()
   return datatableOptions;
+  
 };
 
 const resetTables = () => {
@@ -426,4 +428,8 @@ const resetTables = () => {
     $("#datatable" + i + " tbody").empty();
   }
 };
-      
+      function replaceid() {
+        setTimeout(() => {
+          replaceidname();
+        }, "100");
+      }

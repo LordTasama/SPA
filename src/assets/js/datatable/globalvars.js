@@ -23,6 +23,23 @@ const columnDefault = {
     data: "estado",
     render: (data) => (data === 1 ? "Activo" : "Inactivo"),
   },
+dateRender: {
+    data: "estado",
+    data: "estado",
+    render: (data) => {
+      switch (data) {
+        case 0:
+          return "Cancelada";
+        case 1:
+          return "Pendiente";
+        case 2:
+          return "Terminada";
+        default:
+          return "Unknown";
+      }}
+  
+  },
+  
 };
 
 const obtainFilaName = () => {
@@ -112,7 +129,7 @@ const createAppointmentColumns = () => [
   { data: "fecha" },
   { data: "id_cliente" },
   { data: "id_servicio" },
-  columnDefault.statusRender,
+  columnDefault.dateRender,
   columnDefault.editButton(5),
 ];
 

@@ -2,35 +2,38 @@
 session_start();
 require_once '../config/mysql.php';
 $mysql = new Mysql;
-try {
 
+try {
     if (
         isset($_SESSION['id']) && isset($_SESSION['correo']) && isset($_SESSION['password']) &&
         isset($_SESSION['login'])
     ) {
         $id = $_SESSION['id'];
         $mysql->conectar();
-        $rol = $_SESSION['rol'] ?? '';
-        switch ($rol) {
-            case '':
-                break;
-            default:
-                $table = $rol == 1 ? 'usuario' : 'terapeuta';
-                $stmt = $mysql->consulta("SELECT estado FROM $table where id = ?", [$id]);
-                $result = $stmt->fetch(PDO::FETCH_NUM);
+        $rol = $_SESSION['rol'];
 
-                if (count($result) == 1) {
-                    if ($result[0] != 1) {
-                        session_destroy();
-                        header("Location: ./login.php");
-                        exit;
-                    }
-                }
+        $stmt = $mysql->consulta("SELECT id_rol, estado FROM usuario where id = ?", [$id]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (count($result) == 2) {
+            if ($result['estado'] == 1 && ($result['id_rol'] == 1 || $result['id_rol'] == 2)) {
+                // User is valid, proceed with the application
+            } else {
+                session_destroy();
+                header("Location: ./login.php");
+                exit;
+            }
+        } else {
+            session_destroy();
+            header("Location: ./login.php");
+            exit;
         }
     } else {
         header("Location:./login.php");
         exit;
     }
+
+
 ?>
 
     <!DOCTYPE html>
@@ -90,36 +93,36 @@ try {
                             style="">
                             <div class="bg-white py-2 collapse-inner rounded navitem-container">
                                 <h6 class="collapse-header">Tablas</h6>
-                                <div class="collapse-item d-flex align-items-center p-0 justify-content-between">
+                                <div class="collapse-item d-flex align-items-center p-0 justify-content-between" onclick="pageChange(0)">
                                     <i class="fa-solid fa-caret-right fa-sm ms-1"></i>
-                                    <a class="collapse-item cursor-link-a" onclick="pageChange(0)">Usuarios</a>
+                                    <a class="collapse-item cursor-link-a">Usuarios</a>
                                     <i class="fa-solid fa-user-tie fa-sm me-1"></i>
                                 </div>
-                                <div class="collapse-item d-flex align-items-center p-0 justify-content-between">
+                                <div class="collapse-item d-flex align-items-center p-0 justify-content-between" onclick="pageChange(1)">
                                     <i class="fa-solid fa-caret-right fa-sm ms-1"></i>
-                                    <a class="collapse-item cursor-link-a" onclick="pageChange(1)">Terapeutas</a>
+                                    <a class="collapse-item cursor-link-a">Terapeutas</a>
                                     <i class="fa-solid fa-user-nurse fa-sm me-1"></i>
                                 </div>
 
-                                <div class="collapse-item d-flex align-items-center p-0 justify-content-between">
+                                <div class="collapse-item d-flex align-items-center p-0 justify-content-between" onclick="pageChange(2)">
                                     <i class="fa-solid fa-caret-right fa-sm ms-1"></i>
-                                    <a class="collapse-item cursor-link-a" onclick="pageChange(2)">Clientes</a>
+                                    <a class="collapse-item cursor-link-a">Clientes</a>
                                     <i class="fa-solid fa-user fa-sm me-1"></i>
                                 </div>
 
-                                <div class="collapse-item d-flex align-items-center p-0 justify-content-between">
+                                <div class="collapse-item d-flex align-items-center p-0 justify-content-between" onclick="pageChange(3)">
                                     <i class="fa-solid fa-caret-right fa-sm ms-1"></i>
-                                    <a class="collapse-item cursor-link-a" onclick="pageChange(3)">Servicios</a>
+                                    <a class="collapse-item cursor-link-a">Servicios</a>
                                     <i class="fa-solid fa-bell-concierge fa-sm me-1"></i>
                                 </div>
-                                <div class="collapse-item d-flex align-items-center p-0 justify-content-between">
+                                <div class="collapse-item d-flex align-items-center p-0 justify-content-between" onclick="pageChange(4)">
                                     <i class="fa-solid fa-caret-right fa-sm ms-1"></i>
-                                    <a class="collapse-item cursor-link-a" onclick="pageChange(4)">Productos</a>
+                                    <a class="collapse-item cursor-link-a">Productos</a>
                                     <i class="fa-solid fa-tags fa-sm me-1"></i>
                                 </div>
-                                <div class="collapse-item d-flex align-items-center p-0 justify-content-between">
+                                <div class="collapse-item d-flex align-items-center p-0 justify-content-between " onclick="pageChange(5)">
                                     <i class="fa-solid fa-caret-right fa-sm ms-1"></i>
-                                    <a class="collapse-item cursor-link-a" onclick="pageChange(5)">Citas</a>
+                                    <a class="collapse-item cursor-link-a">Citas</a>
                                     <i class="fa-regular fa-calendar-days fa-sm me-1"></i>
                                 </div>
                             </div>
@@ -585,6 +588,35 @@ try {
                                                 </tbody>
                                             </table>
 
+                                            <script>
+                                                function replaceidname() {
+
+
+
+                                                    fetch("../controller/Data/servicesinfo.php", {
+                                                            method: "POST",
+                                                        })
+                                                        .then((response) => {
+                                                            return response.json();
+                                                        })
+                                                        .then(data => {
+                                                            var services = data.reduce((acc, service) => {
+                                                                acc[service.id] = service.nombre;
+                                                                return acc;
+                                                            }, {});
+
+                                                            // Get the table rows
+                                                            var rows = $('#datatable5 tbody tr');
+
+                                                            // Iterate over the rows
+                                                            rows.each(function() {
+                                                                var row = $(this);
+                                                                var servicioId = row.find('td:nth-child(5)').text();
+                                                                row.find('td:nth-child(5)').text(services[servicioId]);
+                                                            });
+                                                        });
+                                                }
+                                            </script>
                                         </div>
                                     </div>
                                 </div>
@@ -711,7 +743,7 @@ try {
                                                     </div>
                                                     <p></p>
                                                     <div class="col">
-                                                      
+
                                                         <input type="datetime-local" hidden name="" class="form-control" id="fechapago">
                                                     </div>
                                                     <p></p>
@@ -999,7 +1031,8 @@ try {
                                 </div>
                                 <div class="col">
                                     <div class="form-floating">
-                                        <select name="rol" class="form-select">
+                                        <select required name="rol" class="form-select">
+                                            <option value="">Elegir un rol (opcional)</option>
                                             <option value="1">Administrador</option>
                                             <option value="2">Secretaria</option>
                                         </select>
@@ -1872,229 +1905,239 @@ try {
 
                         <form action="">
                             <div class="row mx-auto mb-3">
-                              
-                        
+
+
+                                <div class="form-floating">
                                     <div class="form-floating">
-                                        <div class="form-floating">
-                                            <input type="datetime-local" class="form-control datetime" name="fecha"
-                                                placeholder="">
-                                            <label for="date" class="form-label">Fecha</label>
-                                        </div>
+                                        <input type="datetime-local" class="form-control datetime" name="fecha"
+                                            placeholder="">
+                                        <label for="date" class="form-label">Fecha</label>
                                     </div>
-                           
+                                </div>
+
 
                             </div>
 
-                           
-                                                    <div class="col">
-                                                        <label for="">Cliente</label>
-                                                        <input type="text" name="" class="form-control" id="cliente" list="clientelist2">
-                                                        <datalist id="clientelist2"></datalist>
-                                                        <input type="hidden" id="idcliente2">
-                                                    </div>
 
-                                                    <script>
-                                                        fetch("../controller/Data/clientsinfo.php", {
-                                                                method: "POST",
-                                                            })
-                                                            .then((response) => {
-                                                                return response.json();
-                                                            })
-                                                            .then(data => {
-                                                                const clientelist = document.getElementById('clientelist2');
-                                                                data.forEach(item => {
-                                                                    const option = document.createElement('option');
-                                                                    option.value = item.id; // store the ID as the value
-                                                                    option.label = `${item.nombres} ${item.apellidos}`; // display the full name as the label
-                                                                    clientelist.appendChild(option);
-                                                                })
-                                                            })
-                                                    </script>
-                                                    <br>
-                            
-                                                    <div class="col">
-                                                        <label for="">Servicio</label>
-                                                        <input type="text" name="" class="form-control" id="servicio" list="serviciolist">
-                                                        <datalist id="serviciolist"></datalist>
-                                                        <input type="hidden" id="idservicio">
-                                                    </div>
+                            <div class="col">
+                                <label for="">Cliente</label>
+                                <input type="text" name="" class="form-control" id="cliente" list="clientelist2">
+                                <datalist id="clientelist2"></datalist>
+                                <input type="hidden" id="idcliente2">
+                            </div>
 
-                                                    <script>
-                                                        fetch("../controller/Data/servicesinfo.php", {
-                                                                method: "POST",
-                                                            })
-                                                            .then((response) => {
-                                                                return response.json();
-                                                            })
-                                                            .then(data => {
-                                                                const clientelist = document.getElementById('serviciolist');
-                                                                data.forEach(item => {
-                                                                    const option = document.createElement('option');
-                                                                    option.value = item.id; // store the ID as the value
-                                                                    option.label = `${item.nombre} ${item.tipo}`; // display the full name as the label
-                                                                    clientelist.appendChild(option);
-                                                                })
-                                                            })
-                                                    </script>
+                            <script>
+                                fetch("../controller/Data/clientsinfo.php", {
+                                        method: "POST",
+                                    })
+                                    .then((response) => {
+                                        return response.json();
+                                    })
+                                    .then(data => {
+                                        const clientelist = document.getElementById('clientelist2');
+                                        data.forEach(item => {
+                                            const option = document.createElement('option');
+                                            option.value = item.id; // store the ID as the value
+                                            option.label = `${item.nombres} ${item.apellidos}`; // display the full name as the label
+                                            clientelist.appendChild(option);
+                                        })
+                                    })
+                            </script>
+                            <br>
 
-<div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        <button type="submit" class="btn btn-success"">Guardar</button>
-                    </div>
+                            <div class="col">
+                                <label for="">Servicio</label>
+                                <input type="text" name="" class="form-control" id="servicio" list="serviciolist">
+                                <datalist id="serviciolist"></datalist>
+                                <input type="hidden" id="idservicio">
+                            </div>
+
+                            <script>
+                                fetch("../controller/Data/servicesinfo.php", {
+                                        method: "POST",
+                                    })
+                                    .then((response) => {
+                                        return response.json();
+                                    })
+                                    .then(data => {
+                                        const clientelist = document.getElementById('serviciolist');
+                                        data.forEach(item => {
+                                            const option = document.createElement('option');
+                                            option.value = item.id; // store the ID as the value
+                                            option.label = `${item.nombre} ${item.tipo}`; // display the full name as the label
+                                            clientelist.appendChild(option);
+                                        })
+                                    })
+                            </script>
+
+                            <div class=" col-12 justify-content-center"
+                                style="margin-top:2% !important">
+                                <div class="form-floating">
+                                    <select name="Estado" class="form-select" id="Estado">
+                                        <option value="0">Pendiente</option>
+                                        <option value="1">Terminada</option>
+                                        <option value="2">Cancelada</option>
+
+                                    </select>
+                                    <label for="Estado">Selecciona un filtro</label>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                    <button type="submit" class="btn btn-success"">Guardar</button>
+                  
+                                </div>
                         </form>
+                        </div>
                     </div>
                    
                 </div>
             </div>
         </div>
         <!-- Status quote Modal -->
-        <div class="modal fade" id="statusModalquote" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="statusModalQuoteLabel">Cambiar estado</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <h6 class="text-center text-danger">Esta acción cambiará el estado de esta cita, si está
-                            "Activo" pasará a "Inactivo" y viceversa.</h6>
-                        <input type="number" name="id" style="display:none">
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        <button type="button" class="btn btn-success"
-                            onclick="handleRequest(this,5,'post','status')">Aceptar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Modal facturación -->
-        <div class="modal fade" id="elementsmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-fullscreen">
-                <div class="modal-content bg-transparent">
-
-                    <div class="modal-body">
-
-                        <div>
-
-                            <div class="container card p-3">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <h1>Productos</h1>
-                                        <div class="table-responsive">
-                                            <table id="products-table" class="table  datatable collapsed" width="100%"
-                                                cellspacing="0">
-                                                <thead>
-                                                    <tr>
-                                                        <th>ID</th>
-                                                        <th>Stock</th>
-                                                        <th>Nombre</th>
-                                                        <th>Tipo</th>
-                                                        <th>Precio</th>
-                                                        <th></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody id="table-body">
-                                                </tbody>
-                                            </table>
-
-
+        <div class=" modal fade" id="statusModalquote" tabindex="-1" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="statusModalQuoteLabel">Cambiar estado</h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <h6 class="text-center text-danger">Esta acción cambiará el estado de esta cita.</h6>
+                                                    <input type="number" name="id" style="display:none">
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                                    <button type="button" class="btn btn-success"
+                                                        onclick="handleRequest(this,5,'post','status')">Confirmar</button>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-6 ">
-                                        <h1>Servicios</h1>
-                                        <div class="table-responsive">
-                                            <table id="services-table" class="table  datatable collapsed" width="100%" cellspacing="0">
-                                                <thead>
-                                                    <tr>
-                                                        <th>ID</th>
-                                                        <th>Nombre</th>
-                                                        <th>Precio</th>
-                                                        <th>Tipo</th>
-                                                        <th>Duración</th>
-                                                        <th></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody id="services-table-body">
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-
                                 </div>
-                                <br>
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Cerrar</button>
+                                <!-- Modal facturación -->
+                                <div class="modal fade modal-left" id="elementsmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content bg-transparent border-0 ">
 
-                            </div>
-                        </div>
+                                            <div class="modal-body">
 
-                    </div>
+                                                <div>
 
-                </div>
-            </div>
-        </div>
-        <!-- Logout Modal-->
-        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logOutModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="logOutModalLabel">Cerrar sesión</h5>
-                        <button class="close" type="button" data-bs-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">Selecciona "Aceptar" si quieres cerrar la sesión actual</div>
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Cancelar</button>
-                        <a class="btn btn-primary" href="../controller/Login/logout.php">Aceptar</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Bootstrap core JavaScript-->
-        <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
-        <script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-
-        <!-- DataTables-->
-        <script src="../../node_modules/datatables.net/js/dataTables.min.js"></script>
-        <script src="../../node_modules/datatables.net-bs5/js/dataTables.bootstrap5.min.js"></script>
-        <script src="../../node_modules/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
-        <script src="../../node_modules/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js"></script>
-        <script src="../../node_modules/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
-        <script src="../../node_modules/datatables.net-buttons/js/buttons.html5.min.js"></script>
-        <script src="../../node_modules/datatables.net-buttons/js/buttons.print.min.js"></script>
-        <script src="../../node_modules/pdfmake/build/pdfmake.min.js"></script>
-        <script src="../../node_modules/pdfmake/build/vfs_fonts.js"></script>
-        <script src="../../node_modules/jszip/dist/jszip.min.js"></script>
-        <script src="../../node_modules/datatables.net-buttons-bs5/js/buttons.bootstrap5.min.js"></script>
-        <script src="../../node_modules/datatables.net-buttons/js/buttons.colVis.min.js"></script>
-
-        <script src="../assets/js/notify.min.js"></script>
-        <script src="../sb-admin/js/sb-admin-2.min.js"></script>
-        <script src="../assets/js/controlpanel/pages.js"></script>
-        <script src="../assets/js/datatable/datatablesconfig.js"></script>
-        <script src="../assets/js/datatable/globalvars.js"></script>
-        <script src="../assets/js/datatable/AutoTabla.js"></script>
-        <script src="../assets/js/controlpanel/main.js"></script>
-
-        <script src="../assets/js/apexcharts/apexcharts.js"></script>
-
-        <script src="../assets/js/graficas.js"></script>
-        <script src="../assets/js/informes.js"></script>
-        <script src="../assets/js/loaddatatable.js"></script>
-        <script src="../assets/js/paypoint.js"></script>
-        <!-- Custom scripts for all pages-->
+                                                    <div class="container card p-2 ">
+                                                        <div class="col">
+                                                            <h1>Productos</h1>
+                                                            <div class="table-responsive">
+                                                                <table id="products-table" class="table  datatable collapsed" width="100%"
+                                                                    cellspacing="0">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>ID</th>
+                                                                            <th>Stock</th>
+                                                                            <th>Nombre</th>
+                                                                            <th>Tipo</th>
+                                                                            <th>Precio</th>
+                                                                            <th></th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody id="table-body">
+                                                                    </tbody>
+                                                                </table>
 
 
-        <!-- Page level custom scripts -->
+                                                            </div>
+                                                        </div>
+                                                        <p></p>
+                                                        <div class="col">
+                                                            <h1>Servicios</h1>
+                                                            <div class="table-responsive">
+                                                                <table id="services-table" class="table  datatable collapsed" width="100%" cellspacing="0">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>ID</th>
+                                                                            <th>Nombre</th>
+                                                                            <th>Precio</th>
+                                                                            <th>Tipo</th>
+                                                                            <th>Duración</th>
+                                                                            <th></th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody id="services-table-body">
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                        <br>
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Cerrar</button>
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Logout Modal-->
+                                <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logOutModalLabel"
+                                    aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="logOutModalLabel">Cerrar sesión</h5>
+                                                <button class="close" type="button" data-bs-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">×</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">Selecciona "Aceptar" si quieres cerrar la sesión actual</div>
+                                            <div class="modal-footer">
+                                                <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Cancelar</button>
+                                                <a class="btn btn-primary" href="../controller/Login/logout.php">Aceptar</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Bootstrap core JavaScript-->
+                                <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
+                                <script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+                                <!-- DataTables-->
+                                <script src="../../node_modules/datatables.net/js/dataTables.min.js"></script>
+                                <script src="../../node_modules/datatables.net-bs5/js/dataTables.bootstrap5.min.js"></script>
+                                <script src="../../node_modules/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+                                <script src="../../node_modules/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js"></script>
+                                <script src="../../node_modules/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+                                <script src="../../node_modules/datatables.net-buttons/js/buttons.html5.min.js"></script>
+                                <script src="../../node_modules/datatables.net-buttons/js/buttons.print.min.js"></script>
+                                <script src="../../node_modules/pdfmake/build/pdfmake.min.js"></script>
+                                <script src="../../node_modules/pdfmake/build/vfs_fonts.js"></script>
+                                <script src="../../node_modules/jszip/dist/jszip.min.js"></script>
+                                <script src="../../node_modules/datatables.net-buttons-bs5/js/buttons.bootstrap5.min.js"></script>
+                                <script src="../../node_modules/datatables.net-buttons/js/buttons.colVis.min.js"></script>
+
+                                <script src="../assets/js/notify.min.js"></script>
+                                <script src="../sb-admin/js/sb-admin-2.min.js"></script>
+                                <script src="../assets/js/controlpanel/pages.js"></script>
+                                <script src="../assets/js/datatable/datatablesconfig.js"></script>
+                                <script src="../assets/js/datatable/globalvars.js"></script>
+                                <script src="../assets/js/datatable/AutoTabla.js"></script>
+                                <script src="../assets/js/controlpanel/main.js"></script>
+
+                                <script src="../assets/js/apexcharts/apexcharts.js"></script>
+
+                                <script src="../assets/js/graficas.js"></script>
+                                <script src="../assets/js/informes.js"></script>
+
+                                <script src="../assets/js/paypoint.js"></script>
+                                <!-- Custom scripts for all pages-->
+
+
+                                <!-- Page level custom scripts -->
 
     </body>
 
     </html>
 <?php
-} catch (Exception $e) {
-    header("Location: ./login.php");
-    exit;
+} catch (\Throwable $th) {
+    //throw $th;
 }

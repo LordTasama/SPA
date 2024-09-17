@@ -2,36 +2,31 @@
 session_start();
 require_once '../config/mysql.php';
 $mysql = new Mysql;
-try{
 
-if (isset($_SESSION['id']) && isset($_SESSION['correo']) && isset($_SESSION['password']) &&
-    isset($_SESSION['login'])){
+if (
+    isset($_SESSION['id']) && isset($_SESSION['correo']) && isset($_SESSION['password']) &&
+    isset($_SESSION['login'])
+) {
     $id = $_SESSION['id'];
     $mysql->conectar();
     $rol = $_SESSION['rol'] ?? '';
-    switch ($rol) {
-        case '':
-            break;
-        default:
-    $table = $rol == 1 ?'usuario':'terapeuta';
-    $stmt = $mysql->consulta("SELECT estado FROM $table where id = ?",[$id]);
-    $result = $stmt->fetch(PDO::FETCH_NUM);
-    
-    if (count($result) == 1){
-    if($result[0] != 1){
-    session_destroy();
-    header("Location: ./login.php");
-    exit;
-    }
-    else{
-    header("Location: ./controlpanel.php");
-    exit;    
-    }
-    }
-    }
-    }
 
-    ?>
+    $stmt = $mysql->consulta("SELECT id_rol, estado FROM usuario where id_rol = ?", [$id]);
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($result !== false && count($result) == 2) {
+        if ($result['estado'] == 1 && ($result['rol'] == 1 || $result['rol'] == 'administrador')) {
+            // Session is valid, redirect to control panel
+            header("Location: ./controlpanel.php");
+        
+        }
+    }
+}
+
+
+
+
+?>
 <!doctype html>
 <html lang="en">
 
@@ -84,11 +79,11 @@ if (isset($_SESSION['id']) && isset($_SESSION['correo']) && isset($_SESSION['pas
                                 <label for="user">Selecciona tu rol</label>
                             </div>
                             <div class="form-floating mb-3">
-                                <input type="user" class="form-control" id="user" >
+                                <input type="user" class="form-control" id="user">
                                 <label for="user">Correo electrónico o identificación</label>
                             </div>
                             <div class="form-floating mb-3">
-                                <input type="password" class="form-control" id="password" >
+                                <input type="password" class="form-control" id="password">
                                 <label for="password">Contraseña</label>
                             </div>
 
@@ -111,8 +106,3 @@ if (isset($_SESSION['id']) && isset($_SESSION['correo']) && isset($_SESSION['pas
 
 </html>
 <?php
-}
-catch(Exception $e){
-    header("Location: ./login.php");
-    exit;
-}

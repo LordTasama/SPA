@@ -3,28 +3,21 @@ session_start();
 require_once '../../config/mysql.php';
 $mysql = new Mysql;
 
-try {
-    if (isset($_SESSION['id']) && isset($_SESSION['correo']) && isset($_SESSION['password']) &&
-        isset($_SESSION['login'])) {
-        $id = $_SESSION['id'];
-        $mysql->conectar();
-        $rol = $_SESSION['rol'] ?? '';
 
-        if ($rol == '') {
-            session_destroy();
-            echo '{"data":"Rol no está definido","response":"error"}';
-            exit;
-        }
+if (
+    isset($_SESSION['id']) && isset($_SESSION['correo']) && isset($_SESSION['password']) &&
+    isset($_SESSION['login'])
+) {
+    $id = $_SESSION['id'];
+    $mysql->conectar();
+    $rol = $_SESSION['rol'] ;
 
-        $table = $rol == 1 ? 'usuario' : 'terapeuta';
-        $stmt = $mysql->consulta("SELECT estado FROM $table where id = ?", [$id]);
-        $result = $stmt->fetch(PDO::FETCH_NUM);
-        if (count($result) == 1) {
-            if ($result[0] != 1) {
-                session_destroy();
-                echo '{"data":"Su estado es inactivo","response":"error"}';
-                exit;
-            } else {
+    $stmt = $mysql->consulta("SELECT id_rol, estado FROM usuario where id = ?", [$id]);
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (count($result) == 2) {
+        if ($result['estado'] == 1 && ($result['id_rol'] == 1 )) {
+        
                 $json = json_decode(file_get_contents('php://input'), true);
 
                 if (!isset($json['fecha']) || !isset($json['total']) || !isset($json['metodo_pago']) || !isset($json['id_cliente']) || !isset($json['detalle'])) {
@@ -76,7 +69,3 @@ try {
         echo '{"data":"No deberías estar aquí, vete e inicia sesión correctamente...","response":"error"}';
         exit;
     }
-} catch (Exception $e) {
-    echo '{"data":"' . $e->getMessage() . '","response":"error"}';
-    exit;
-}

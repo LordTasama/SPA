@@ -1,8 +1,8 @@
 <?php
 class Mysql {
 private $username = "root";
-private $password  = "12345";
-private $dsn = "mysql:host=db;dbname=spa;charset=utf8";
+private $password  = "";
+private $dsn = "mysql:host=localhost;dbname=spa;charset=utf8";
 
 private $pdo;
 private $queryResult;

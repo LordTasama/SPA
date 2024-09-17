@@ -8,24 +8,21 @@ if ($rol != 1) {
     exit;
 }
 
-try{
-if (isset($_SESSION['id']) && isset($_SESSION['correo']) && isset($_SESSION['password']) &&
-    isset($_SESSION['login'])){
+
+if (
+    isset($_SESSION['id']) && isset($_SESSION['correo']) && isset($_SESSION['password']) &&
+    isset($_SESSION['login'])
+) {
     $id = $_SESSION['id'];
     $mysql->conectar();
-    $stmt = $mysql->consulta("SELECT estado,id_rol FROM usuario where id = ?",[$id]);
-    $result = $stmt->fetch(PDO::FETCH_NUM);
-    if (count($result) == 2){
-    if($result[0] != 1){
-    session_destroy();
-    echo '{"data":"Su estado es inactivo","response":"error"}';
-    exit;
-    }
-    if($result[1] != 1){
-    echo '{"data":"Debes ser administrador para realizar esta acción","response":"error"}';
-    exit;
-    }
-    else{
+    $rol = $_SESSION['rol'] ;
+
+    $stmt = $mysql->consulta("SELECT id_rol, estado FROM usuario where id = ?", [$id]);
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (count($result) == 2) {
+        if ($result['estado'] == 1 && ($result['id_rol'] == 1 || $result['id_rol'] == 2)) {
+        
         if (!isset($_POST['id'])){
             echo '{"data":"Datos no válidos","response":"error"}';
             exit;
@@ -63,10 +60,3 @@ if (isset($_SESSION['id']) && isset($_SESSION['correo']) && isset($_SESSION['pas
         echo '{"data":"No deberías estar aquí, vete e inicia sesión correctamente...","response":"error"}';
         exit;
         }
-}
-catch(Exception $e){
-    echo '{"data":"Algo inesperado ocurrió...","response":"error"}'; 
-    exit;
-    
- 
-}

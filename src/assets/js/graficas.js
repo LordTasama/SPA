@@ -116,7 +116,7 @@ function cargar() {
             },
           },
 
-          colors: ["#431C67", "#463A72", "#4F437C", "#574B87", "#623D85"],// Asignas los colores aquí
+          colors: ["#f31C67", "#4f3Af2", "#4Ff37C", "#e74ff7", "#623Df5"],// Asignas los colores aquí
           theme: {
             mode: "light",
             monochrome: {
