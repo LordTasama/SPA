@@ -170,7 +170,8 @@ generarfactura.addEventListener("click", function () {
     $.notify("Debe elegir un cliente para realizar la operación", "error");
   }
   //Comptrobar si hay almenos un producto o servicio en la tabla
-  if (tableBodyOtherTable.rows.length <= 2) {
+  console.log(tableBodyOtherTable.rows);
+  if (tableBodyOtherTable.rows >1) {
     $.notify("Debe agregar al menos un producto o servicio", "error");
   } else {
     const facturaData = {
@@ -180,7 +181,7 @@ generarfactura.addEventListener("click", function () {
       id_cliente: cliente.value, // ID del cliente
       detalle: [], // detalles de la factura
     };
-    for (let i = 2; i < tableBodyOtherTable.rows.length; i++) {
+    for (let i = 1; i < tableBodyOtherTable.rows.length; i++) {
       const row = tableBodyOtherTable.rows[i];
 
       const detalle = {
@@ -210,7 +211,7 @@ generarfactura.addEventListener("click", function () {
  
 setTimeout(() => {
   location.reload();
-}, "2000");
+}, "1000");
           
              } else {
           $.notify("Error al crear la factura", "error"); // Notify the user with an error message

@@ -1,0 +1,32 @@
+@import url("./bootstrap.min.css");
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
+
+main {
+  min-height: 60vh;
+}
+
+.section-hover {
+  opacity: 75%;
+  transition: opacity 0.3s ease-in-out 0s;
+}
+.section-hover:hover {
+  opacity: 100%;
+}
+
+.bg-img-login {
+  min-height: 88vh;
+  background-image: url("../img/img_spa_login.webp");
+  background-size: cover;
+  background-position: center;
+  box-shadow: inset 0px 0px 50px 60px #e9ecef;
+}
+.bg-img-register {
+  min-height: 88vh;
+  background-image: url("../img/img_spa_register.jpg");
+  background-size: cover;
+  background-position: center;
+  box-shadow: inset 0px 0px 50px 60px #e9ecef;
+}
+.logo-icon {
+  filter: drop-shadow(6px 4px 30px rgba(255, 255, 255, 0.283));
+}

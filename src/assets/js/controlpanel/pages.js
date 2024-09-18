@@ -21,19 +21,26 @@ const pageChange = (n) => {
     "servicesinfo.php",
     "productsinfo.php",
     "appointmentsinfo.php",
+    "facturas.php"
   ];
 
-  if (document.querySelector("#datatable" + n)) {
-    $("#datatable" + n).dataTable(
-      returnDatatableOption(n, `../controller/${carpets[n]}/${actionTarget[n]}`)
-    );
-  } else {
-    switch (n) {
-      case 5:
-        cargar();
-        break;
-      case 6:
-        "";
-    }
+  // ...
+
+if (document.querySelector("#datatable" + n)) {
+  $("#datatable" + n).dataTable(
+    returnDatatableOption(n, `../controller/${carpets[n]}/${actionTarget[n]}`)
+  );
+  console.log(n);
+} else {
+  switch (n) {
+    case 5:
+      cargar();
+      break;
+    case 6:
+      ""; // Llamar a la función searchInvoices cuando se abre la página 9
+      break;
   }
+}
+
+
 };

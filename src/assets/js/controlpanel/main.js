@@ -38,6 +38,7 @@ let globalModal = "";
 const idSearchUser = document.querySelector("#idSearchUser");
 const idSearchTherapist = document.querySelector("#idSearchTherapist");
 const idSearchClient = document.querySelector("#idSearchClient");
+const idSearchClientReceipt = document.querySelector("#idSearchClientReceipt");
 const idSearchService = document.querySelector("#idSearchService");
 const idSearchProduct = document.querySelector("#idSearchProduct");
 const idSearchquotes = document.querySelector("#idSearchquotes");
@@ -56,6 +57,8 @@ const handleListAll = (target, action) => {
     "servicesinfo.php",
     "productsinfo.php",
     "appointmentsinfo.php",
+    "facturas.php",
+   
   ];
   const actionParams = [
     `rol=${filterUser.value}&all=true`,
@@ -77,6 +80,7 @@ const handleListAll = (target, action) => {
 
 const handleSearch = (target, action) => {
   resetTables();
+  console.log(target);
   const carpets = ["Administrador", "Data"];
   const actionTarget = [
     "usersinfo.php",
@@ -85,6 +89,7 @@ const handleSearch = (target, action) => {
     "servicesinfo.php",
     "productsinfo.php",
     "appointmentsinfo.php",
+    "facturas.php"
   ];
   const actionParams = [
     idSearchUser.value,
@@ -93,6 +98,7 @@ const handleSearch = (target, action) => {
     idSearchService.value,
     idSearchProduct.value,
     idSearchquotes.value,
+    idSearchClientReceipt.value,
   ];
   $("#datatable" + action).dataTable(
     returnDatatableOption(
@@ -140,6 +146,7 @@ const handleRequest = (element, target, method, action) => {
     "../controller/Data/servicesinfo.php",
     "../controller/Data/productsinfo.php",
     "../controller/Data/appointmentsinfo.php",
+    "../controller/Data/facturas.php"
   ];
 
   const url = urls[action][target];
@@ -153,6 +160,7 @@ const handleRequest = (element, target, method, action) => {
     .then((res) => {
       $.notify(res.data, res.response);
       if (res.response === "success") {
+        console.log(res.data)
         resetTables();
         $("#datatable" + target).dataTable(
           returnDatatableOption(target, success)
