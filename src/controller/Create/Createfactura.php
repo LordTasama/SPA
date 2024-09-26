@@ -5,7 +5,7 @@ $mysql = new Mysql;
 
 
 if (
-    isset($_SESSION['id']) && isset($_SESSION['correo']) && isset($_SESSION['password']) &&
+    isset($_SESSION['id']) && isset($_SESSION['correo']) &&
     isset($_SESSION['login'])
 ) {
     $id = $_SESSION['id'];
@@ -16,7 +16,7 @@ if (
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (count($result) == 2) {
-        if ($result['estado'] == 1 && ($result['id_rol'] == 1 )) {
+        if ($result['estado'] == 1 && ($result['id_rol'] == 1 )  ||($result['id_rol'] == 2 )) {
         
                 $json = json_decode(file_get_contents('php://input'), true);
 

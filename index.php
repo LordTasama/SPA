@@ -302,42 +302,7 @@
 
         <!-- end Asked -->
         <!-- contact testimonial-->
-        <div id="contact" class="contact">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="titlepage">
-                            <h2>Contáctanos</h2>
-                        </div>
-                        <div class="cont">
-                            <span>Reserva tu cita ahora y sumérgete en una experiencia de bienestar única.</span>
-                            <a href="#">Reservar Ahora</a>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <form class="main_form">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <input class="contactus" placeholder="Nombre Completo" type="text" name="Full Name">
-                                </div>
-                                <div class="col-sm-12">
-                                    <input class="contactus" placeholder="Correo Electrónico" type="email" name="Email">
-                                </div>
-                                <div class="col-sm-12">
-                                    <input class="contactus" placeholder="Número de Teléfono" type="text" name="Phone Number">
-                                </div>
-                                <div class="col-sm-12">
-                                    <textarea class="textarea" placeholder="Mensaje" type="text" name="Message"></textarea>
-                                </div>
-                                <div class="col-sm-12">
-                                    <button class="send">Enviar</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
+
         <!-- end contact -->
         <!--  footer -->
         <footer>

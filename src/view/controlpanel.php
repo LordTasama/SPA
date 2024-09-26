@@ -209,12 +209,7 @@ try {
                                             <?php echo isset($_SESSION["nombres"]) && isset($_SESSION["apellidos"]) ? $_SESSION["nombres"] . " " . $_SESSION["apellidos"] : "Akira Toriyama"; ?>
                                         </a>
                                     </li>
-                                    <li>
-                                        <a class="dropdown-item cursor-link-a">
-                                            <i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>
-                                            Perfil
-                                        </a>
-                                    </li>
+                                  
                                     <li>
                                         <hr class="dropdown-divider">
                                     </li>
@@ -621,7 +616,7 @@ try {
                                     </div>
                                 </div>
                             </div>
-                            <div class="page page-6 page-show">
+                            <div class="page page-6 page-hide" >
                                 <div class="row p-4 d-block" style="transition: all .3s linear;">
                                     <div class="col m-2 card shadow">
                                         <div class="card-body text-end">
@@ -2120,14 +2115,16 @@ try {
                                 <script src="../assets/js/controlpanel/pages.js"></script>
                                 <script src="../assets/js/datatable/datatablesconfig.js"></script>
                                 <script src="../assets/js/datatable/globalvars.js"></script>
-                                <script src="../assets/js/datatable/AutoTabla.js"></script>
-                                <script src="../assets/js/controlpanel/main.js"></script>
+                              <script src="../assets/js/controlpanel/main.js"></script>
 
                                 <script src="../assets/js/apexcharts/apexcharts.js"></script>
 
-                                <script src="../assets/js/graficas.js"></script>
-                                <script src="../assets/js/informes.js"></script>
-
+                                <?php if ($rol == 1) { ?>
+                                    <script src="../assets/js/datatable/AutoTabla.js"></script>
+                             
+    <script src="../assets/js/graficas.js"></script>
+    <script src="../assets/js/informes.js"></script>
+<?php } ?>
                                 <script src="../assets/js/paypoint.js"></script>
                                 <!-- Custom scripts for all pages-->
 

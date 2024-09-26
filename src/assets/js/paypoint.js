@@ -168,9 +168,9 @@ generarfactura.addEventListener("click", function () {
 
   if (cliente.value == "") {
     $.notify("Debe elegir un cliente para realizar la operación", "error");
-  }
+  }else{
   //Comptrobar si hay almenos un producto o servicio en la tabla
-  if (tableBodyOtherTable.rows.length <= 2) {
+  if (tableBodyOtherTable.rows.length < 2) {
     $.notify("Debe agregar al menos un producto o servicio", "error");
   } else {
     const facturaData = {
@@ -217,7 +217,7 @@ setTimeout(() => {
         }
       })
       .catch((error) => console.error("Error:", error));
-  }
+  } }
 });
 
 fetch("../controller/Data/servicesinfo.php", {
