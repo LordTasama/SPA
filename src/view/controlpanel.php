@@ -109,6 +109,12 @@ try {
                                     <a class="collapse-item cursor-link-a">Clientes</a>
                                     <i class="fa-solid fa-user fa-sm me-1"></i>
                                 </div>
+                                <div class="collapse-item d-flex align-items-center p-0 justify-content-between" onclick="pageChange(9)">
+                                    <i class="fa-solid fa-caret-right fa-sm ms-1"></i>
+                                    <a class="collapse-item cursor-link-a">Facturas</a>
+                                    <i class="fa-solid fa-receipt fa-sm me-1"></i>
+                                </div>
+
 
                                 <div class="collapse-item d-flex align-items-center p-0 justify-content-between" onclick="pageChange(3)">
                                     <i class="fa-solid fa-caret-right fa-sm ms-1"></i>
@@ -813,6 +819,94 @@ try {
 
                                 </div>
                             </div>
+                            <!-- Página de facturas -->
+                            <div class="page page-9 page-hide">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="justify">
+                                            <div class="row align-items-center">
+                                                <div class="col-lg-2 col-12 text-center" style="margin-top:2% !important">
+                                                    <h5 class="card-title">Facturas</h5>
+                                                </div>
+                                                <div class="col-lg-4 col-12" style="margin-top:2% !important">
+                                                    <div class="input-group flex-nowrap">
+                                                        <input type="number" class="form-control"
+                                                            placeholder="Buscar por identificación"
+                                                       
+                                                         id="idSearchClientReceipt" list="clientelist">
+
+                                                 
+       
+                                                        <span class="input-group-text" data-bs-toggle="tooltip"
+                                                            data-bs-placement="top" data-bs-title="Buscar Factura"
+                                                            style="cursor:pointer" id="searchReceiptButton">
+                                                            <i class="fa-solid fa-magnifying-glass"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                             
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="table-responsive">
+                                            <table id="datatable6" class="table table-bordered" width="100%" cellspacing="0">
+                                                <thead>
+                                                    <tr>
+                                                        <th>id</th>
+                                                        <th>fecha</th>
+                                                        <th>total</th>
+                                                        <th>Metodo de pago</th>
+                                                        <th>Id Cliente</th>
+                                                        <th>Acciones</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <!-- Las filas se llenarán dinámicamente -->
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Modal para detalle de factura -->
+                     
+
+
+
+                            <!-- Modal para mostrar el detalle de la factura -->
+                         <!-- Modal for invoice details -->
+<div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detailModalLabel">Detalles de la Factura</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="invoiceDetailsTable">
+                        <thead>
+                            <tr>
+                                <th>Producto/Servicio</th>
+                                <th>Cantidad</th>
+                                <th>Precio Unitario</th>
+                                <th>Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Las filas se llenarán dinámicamente -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
                         </div>
 
                     </div>
@@ -2091,7 +2185,7 @@ try {
                                         </div>
                                     </div>
                                 </div>
-
+                                <script src="../assets/js/controlpanel/facturas.js"></script>
                                 <!-- Bootstrap core JavaScript-->
                                 <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
                                 <script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
